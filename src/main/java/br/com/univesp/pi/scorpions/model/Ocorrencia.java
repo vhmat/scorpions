@@ -1,10 +1,18 @@
 package br.com.univesp.pi.scorpions.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Entity
 public class Ocorrencia {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String nome;
@@ -22,6 +30,8 @@ public class Ocorrencia {
     private String cidade;
 
     private LocalDateTime dataOcorrencia;
+
+    public Ocorrencia () {}
 
     public Ocorrencia(int id, String nome, String email, String telefone, double latitude, double longitude, String bairro, String cidade, LocalDateTime dataOcorrencia) {
         this.id = id;
