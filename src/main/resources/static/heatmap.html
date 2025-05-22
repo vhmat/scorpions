@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Calor - Ocorrências de Escorpião</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+<script>
+    const map = L.map('map').setView([-22.8577, -47.2203], 12); // ajuste a localização inicial
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    fetch('/api/ocorrencias')
+        .then(response => response.json())
+        .then(data => {
+            const pontos = data
+                .filter(o => o.latitude && o.longitude)
+                .map(o => [o.latitude, o.longitude, 0.5]);
+
+            L.heatLayer(pontos, { radius: 25 }).addTo(map);
+        })
+        .catch(err => console.error('Erro ao carregar dados:', err));
+</script>
+</body>
+</html>

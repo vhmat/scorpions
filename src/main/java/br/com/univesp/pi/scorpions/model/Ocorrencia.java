@@ -1,5 +1,6 @@
 package br.com.univesp.pi.scorpions.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +30,7 @@ public class Ocorrencia {
 
     private String cidade;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private LocalDateTime dataOcorrencia;
 
     public Ocorrencia () {}
