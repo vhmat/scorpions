@@ -1,39 +1,83 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Mapa de Calor - Ocorrências de Escorpião</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>Mapa de Escorpiões - Heatmap</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
         #map {
-            height: 100vh;
-            width: 100%;
+          height: 90vh;
+          width: 100%;
+        }
+        #filters {
+          margin: 10px;
+        }
+        label {
+          margin-right: 8px;
+        }
+        input {
+          margin-right: 15px;
+          padding: 4px 6px;
+        }
+        button {
+          padding: 5px 10px;
+          cursor: pointer;
         }
     </style>
 </head>
 <body>
+
+<div id="filters">
+    <label for="bairro">Bairro:</label>
+    <input type="text" id="bairro" placeholder="Ex: Parque dos Pinheiros" />
+
+    <label for="ano">Ano:</label>
+    <input type="number" id="ano" placeholder="Ex: 2025" min="2000" max="2100" />
+
+    <button onclick="carregarMapa()">Aplicar Filtros</button>
+</div>
+
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 <script>
-    const map = L.map('map').setView([-22.8577, -47.2203], 12); // ajustada a localização inicial para coordenadas do polo Univesp
+    const map = L.map('map').setView([-22.87, -47.21], 13); // mapa inicializando no centro de Hortolandia
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+      attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    fetch('/api/ocorrencias')
+    let heatLayer;
+
+    function carregarMapa() {
+      const bairro = document.getElementById('bairro').value;
+      const ano = document.getElementById('ano').value;
+
+      let url = '/api/ocorrencias/filtrar?';
+      if (bairro) url += `bairro=${encodeURIComponent(bairro)}&`;
+      if (ano) url += `ano=${encodeURIComponent(ano)}&`;
+
+      fetch(url)
         .then(response => response.json())
         .then(data => {
-            const pontos = data
-                .filter(o => o.latitude && o.longitude)
-                .map(o => [o.latitude, o.longitude, 0.5]);
-
-            L.heatLayer(pontos, { radius: 25 }).addTo(map);
+          const heatPoints = data.map(p => [p.latitude, p.longitude, 0.7]); // intensidade das cores
+          if (heatLayer) {
+            map.removeLayer(heatLayer);
+          }
+          heatLayer = L.heatLayer(heatPoints, {
+            radius: 25,
+            blur: 15,
+            maxZoom: 17,
+          });
+          heatLayer.addTo(map);
         })
-        .catch(err => console.error('Erro ao carregar dados:', err));
+        .catch(err => console.error('Erro ao carregar coordenadas filtradas:', err));
+    }
+
+    // Carrega o mapa inicialmente sem filtro
+    carregarMapa();
 </script>
+
 </body>
 </html>

@@ -29,6 +29,13 @@ public class OcorrenciaController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/filtrar")
+    public List<Ocorrencia> filtrar(
+            @RequestParam(required = false) String bairro,
+            @RequestParam(required = false) Integer ano) {
+        return service.filtrar(bairro, ano);
+    }
+
     @PostMapping
     public Ocorrencia criar(@RequestBody Ocorrencia ocorrencia) {
         return service.salvar(ocorrencia);

@@ -4,6 +4,9 @@ import br.com.univesp.pi.scorpions.model.Ocorrencia;
 import br.com.univesp.pi.scorpions.repository.OcorrenciaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +33,16 @@ public class OcorrenciaService {
 
     public void deletar(Long id) {
         repository.deleteById(id);
+    }
+
+    public List<Ocorrencia> filtrar(String bairro, Integer ano) {
+        return listarTodas().stream()
+                .filter(o -> (bairro == null || bairro.isBlank() || o.getBairro().equalsIgnoreCase(bairro)))
+                .filter(o -> {
+                    if (ano == null) return true;
+                    return o.getDataOcorrencia() != null && o.getDataOcorrencia().getYear() == ano;
+                })
+                .toList();
     }
 }
 
