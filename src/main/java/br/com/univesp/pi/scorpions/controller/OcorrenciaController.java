@@ -2,6 +2,7 @@ package br.com.univesp.pi.scorpions.controller;
 
 import br.com.univesp.pi.scorpions.model.Ocorrencia;
 import br.com.univesp.pi.scorpions.service.OcorrenciaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,9 +38,21 @@ public class OcorrenciaController {
     }
 
     @PostMapping
-    public Ocorrencia criar(@RequestBody Ocorrencia ocorrencia) {
-        return service.salvar(ocorrencia);
+    public ResponseEntity<?> criar(@RequestBody Ocorrencia ocorrencia) {
+        try {
+            Ocorrencia salvo = service.salvar(ocorrencia);
+            return ResponseEntity.ok(salvo);
+        } catch (Exception e) {
+            e.printStackTrace(); // Isso vai imprimir o erro no console
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao salvar: " + e.getMessage());
+        }
     }
+
+/*    @PostMapping
+    public Ocorrencia criar(@RequestBody Ocorrencia ocorrencia) {
+
+        return service.salvar(ocorrencia);
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<Ocorrencia> atualizar(@PathVariable Long id, @RequestBody Ocorrencia novaOcorrencia) {

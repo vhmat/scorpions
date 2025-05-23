@@ -1,48 +1,242 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <meta charset="utf-8" />
-    <title>Mapa de Escorpiões - Heatmap</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mapa de Escorpiões</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <style>
-        #map {
-          height: 90vh;
-          width: 100%;
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
         }
+
+        body, html {
+          height: 100%;
+          font-family: Arial, sans-serif;
+          display: flex;
+          flex-direction: column;
+        }
+
+        /* Menu */
+        header {
+          background-color: #222;
+          color: white;
+          padding: 15px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          position: sticky;
+          top: 0;
+          z-index: 1000;
+        }
+
+        header nav a {
+          color: white;
+          text-decoration: none;
+          margin-left: 20px;
+          font-weight: bold;
+        }
+
+        /* Conteúdo principal */
+        main {
+          flex: 1;
+          padding: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
         #filters {
-          margin: 10px;
+          margin-bottom: 15px;
+          text-align: center;
         }
-        label {
+
+        #filters label {
           margin-right: 8px;
         }
-        input {
+
+        #filters input {
           margin-right: 15px;
           padding: 4px 6px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
         }
-        button {
-          padding: 5px 10px;
+
+        #filters button {
+          padding: 6px 12px;
+          background-color: #222;
+          color: white;
+          border: none;
+          border-radius: 4px;
           cursor: pointer;
+        }
+
+        #map {
+          width: 100%;
+          max-width: 900px;
+          height: 500px;
+          border: 2px solid #ccc;
+          border-radius: 8px;
+        }
+
+        footer {
+          background-color: #222;
+          color: white;
+          text-align: center;
+          padding: 15px;
+          font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+          header {
+            flex-direction: column;
+            align-items: flex-start;
+          }
+
+          header nav {
+            margin-top: 10px;
+          }
+
+          #map {
+            height: 300px;
+          }
         }
     </style>
 </head>
 <body>
 
-<div id="filters">
-    <label for="bairro">Bairro:</label>
-    <input type="text" id="bairro" placeholder="Ex: Parque dos Pinheiros" />
+<header>
+    <div><strong>Escorpiões em Hortolândia</strong></div>
+    <nav>
+        <a href="#">Início</a>
+        <a href="#">Sobre</a>
+        <a href="#">Contato</a>
+    </nav>
+</header>
 
-    <label for="ano">Ano:</label>
-    <input type="number" id="ano" placeholder="Ex: 2025" min="2000" max="2100" />
 
-    <button onclick="carregarMapa()">Aplicar Filtros</button>
+<!--parte central da tela contendo o mapa e o botao para registrar ocorrencia-->
+<main>
+    <h1 style="font-size: 2.5rem; text-align: center; margin-top: 20px;">OCORRÊNCIAS DE ESCORPIÕES EM HORTOLÂNDIA</h1>
+
+    <div id="map" style="height: 500px; width: 100%; margin: 20px 0;"></div>
+
+    <div id="filters" style="text-align: center; margin-bottom: 30px;">
+        <label for="bairro">Bairro:</label>
+        <input type="text" id="bairro" placeholder="Ex: Parque dos Pinheiros" />
+
+        <label for="ano">Ano:</label>
+        <input type="number" id="ano" placeholder="Ex: 2025" min="2000" max="2100" />
+
+        <button onclick="carregarMapa()">Aplicar Filtros</button>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button id="openFormBtn" style="font-size: 1.5rem; padding: 10px 20px; cursor: pointer;">
+            REGISTRAR OCORRÊNCIA
+        </button>
+    </div>
+
+</main>
+
+<!-- modal do formulario -->
+<div id="modalForm" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+     background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
+    <div style="background: white; padding: 20px; border-radius: 8px; width: 90%; max-width: 500px; position: relative; max-height: 90vh; overflow-y: auto;">
+
+        <!-- botao fechar -->
+        <button id="closeFormBtn" style="position: absolute; top: 10px; right: 15px; font-size: 1.5rem; background: none; border: none; cursor: pointer;">×</button>
+
+        <h2 style="text-align: center; margin-bottom: 20px;">Registrar Ocorrência</h2>
+
+        <form id="ocorrenciaForm">
+            <label>Nome:<br/><input type="text" id="nome" name="nome" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Email:<br/><input type="email" id="email" name="email" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Telefone:<br/><input type="tel" id="telefone" name="telefone" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Latitude:<br/><input type="number" id="latitude" step="any" name="latitude" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Longitude:<br/><input type="number" id="longitude" step="any" name="longitude" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Bairro:<br/><input type="text" id="bairroForm" name="bairro" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Cidade:<br/><input type="text" id="cidade" name="cidade" required style="width: 100%; margin-bottom:10px;" /></label>
+            <label>Data Ocorrência:<br/><input type="datetime-local" id="dataOcorrencia" name="dataOcorrencia" required style="width: 100%; margin-bottom:20px;" /></label>
+
+            <div style="text-align: right;">
+                <button type="reset" style="margin-right: 10px; padding: 8px 15px; cursor: pointer;">Limpar</button>
+                <button type="submit" style="padding: 8px 15px; cursor: pointer;">Enviar</button>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div id="map"></div>
+<footer>
+    &copy; 2025 Mapa de Escorpiões. Todos os direitos reservados.
+</footer>
 
+<!-- integracao do formulario com o backend -->
+<script>
+    const modal = document.getElementById('modalForm');
+    const openBtn = document.getElementById('openFormBtn');
+    const closeBtn = document.getElementById('closeFormBtn');
+    const form = document.getElementById('ocorrenciaForm');
+
+    openBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    // Fecha o modal clicando fora do conteúdo
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = {
+        nome: formData.get('nome'),
+        email: formData.get('email'),
+        telefone: formData.get('telefone'),
+        latitude: parseFloat(formData.get('latitude')),
+        longitude: parseFloat(formData.get('longitude')),
+        bairro: formData.get('bairro'),
+        cidade: formData.get('cidade'),
+        dataOcorrencia: formData.get('dataOcorrencia')
+      };
+
+      fetch('/api/ocorrencias', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(resp => {
+        if (!resp.ok) throw new Error('Erro ao registrar ocorrência');
+        return resp.json();
+      })
+      .then(() => {
+        alert('Ocorrência registrada com sucesso!');
+        form.reset();
+        modal.style.display = 'none';
+        carregarMapa(); // atualiza o mapa com os dados novos
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Erro ao registrar ocorrência.');
+      });
+    });
+</script>
+
+<!--logica que carrega o mapa filtrando as ocorrencias registradas no banco de dados-->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
 <script>
-    const map = L.map('map').setView([-22.87, -47.21], 13); // mapa inicializando no centro de Hortolandia
+    const map = L.map('map').setView([-22.87, -47.21], 13);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
@@ -61,21 +255,21 @@
       fetch(url)
         .then(response => response.json())
         .then(data => {
-          const heatPoints = data.map(p => [p.latitude, p.longitude, 0.7]); // intensidade das cores
+          const heatPoints = data.map(p => [p.latitude, p.longitude, 0.7]);
+
           if (heatLayer) {
             map.removeLayer(heatLayer);
           }
+
           heatLayer = L.heatLayer(heatPoints, {
             radius: 25,
             blur: 15,
-            maxZoom: 17,
-          });
-          heatLayer.addTo(map);
+            maxZoom: 17
+          }).addTo(map);
         })
         .catch(err => console.error('Erro ao carregar coordenadas filtradas:', err));
     }
 
-    // Carrega o mapa inicialmente sem filtro
     carregarMapa();
 </script>
 
