@@ -153,9 +153,10 @@
 <header>
     <div><strong>Escorpiões em Hortolândia</strong></div>
     <nav>
-        <a href="#">Início</a>
-        <a href="#">Sobre</a>
-        <a href="#">Contato</a>
+        <a href="/heatmap.html">Início</a>
+        <a href="/informacoes.html">Informações</a>
+        <a href="/noticias.html">Notícias</a>
+        <a href="/contato.html">Contato</a>
     </nav>
 </header>
 
@@ -164,15 +165,16 @@
     <h1 style="font-size: 2.5rem; text-align: center; margin-top: 20px;">OCORRÊNCIAS DE ESCORPIÕES EM HORTOLÂNDIA</h1>
 
     <div id="map" style="height: 500px; width: 100%; margin: 20px 0;"></div>
+    
 
     <div id="filters" style="text-align: center; margin-bottom: 30px;">
-        <label for="bairro">Bairro:</label>
-        <input type="text" id="bairro" placeholder="Ex: Parque dos Pinheiros" />
+<!--        <label for="bairro">Bairro:</label>
+        <input type="text" id="bairro" placeholder="Ex: Parque dos Pinheiros" />-->
 
         <label for="ano">Ano:</label>
         <input type="number" id="ano" placeholder="Ex: 2025" min="2000" max="2100" />
 
-        <button onclick="carregarMapa()">Aplicar Filtros</button>
+        <button onclick="carregarMapa()">Aplicar Filtro</button>
     </div>
 
     <div style="text-align: center; margin-top: 20px;">
@@ -326,11 +328,11 @@
     let heatLayer;
 
     function carregarMapa() {
-      const bairro = document.getElementById('bairro').value;
+      <!--const bairro = document.getElementById('bairro').value;-->
       const ano = document.getElementById('ano').value;
 
       let url = '/api/ocorrencias/filtrar?';
-      if (bairro) url += `bairro=${encodeURIComponent(bairro)}&`;
+      <!--if (bairro) url += `bairro=${encodeURIComponent(bairro)}&`;-->
       if (ano) url += `ano=${encodeURIComponent(ano)}&`;
 
       fetch(url)

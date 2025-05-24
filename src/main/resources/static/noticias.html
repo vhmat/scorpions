@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notícias - Escorpiões em Hortolândia</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Estilos iguais ao heatmap.html, exceto o mapa */
+        body, html {
+          height: 100%;
+          font-family: Arial, sans-serif;
+          display: flex;
+          flex-direction: column;
+        }
+
+        header {
+          background-color: #222;
+          color: white;
+          padding: 15px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        header nav a {
+          color: white;
+          text-decoration: none;
+          margin-left: 20px;
+          font-weight: bold;
+        }
+
+        main {
+          flex: 1;
+          padding: 20px;
+          max-width: 900px;
+          margin: 0 auto;
+        }
+
+        footer {
+          background-color: #222;
+          color: white;
+          text-align: center;
+          padding: 15px;
+          font-size: 14px;
+        }
+
+        h1 {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+
+        h2 {
+          font-size: 1.8rem;
+          margin-top: 40px;
+          margin-bottom: 15px;
+          color: #222;
+        }
+
+        p, .news-meta {
+          line-height: 1.6;
+          margin-bottom: 15px;
+          color: #333;
+        }
+
+        .news-meta {
+          font-style: italic;
+          font-size: 0.9rem;
+          color: #666;
+          margin-top: -10px;
+          margin-bottom: 20px;
+        }
+
+        /* Container responsivo para vídeo 16:9 */
+        .video-container {
+          position: relative;
+          width: 100%;
+          max-width: 900px; /* Limita o máximo */
+          padding-bottom: 56.25%; /* 16:9 proporção */
+          height: 0;
+          margin: 20px auto;
+        }
+
+        .video-container iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          border: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><strong>Escorpiões em Hortolândia</strong></div>
+    <nav>
+        <a href="/heatmap.html">Início</a>
+        <a href="/informacoes.html">Informações</a>
+        <a href="/noticias.html">Notícias</a>
+        <a href="/contato.html">Contato</a>
+    </nav>
+</header>
+
+<main>
+    <h1>NOTÍCIAS</h1>
+
+    <!-- Primeira notícia -->
+    <h2>PICADAS DE ESCORPIÃO: CRIANÇAS E IDOSOS PODEM TER MAIS COMPLICAÇÕES</h2>
+
+    <p><strong>Crianças da rede municipal de ensino de Hortolândia recebem palestra sobre escorpião</strong><br/>
+        Por Departamento de Comunicação<br/>
+        12/maio/2025<br/>
+        segunda-feira<br/>
+        15:27</p>
+
+    <p>Atividade foi ministrada pela UVZ, órgão da da Secretaria de Saúde, nesta segunda-feira (12/05) e na sexta-feira (09/05) para estudantes do Jd. Nova Hortolândia</p>
+
+    <p>Por sua idade e condição formativa, as crianças tendem a absorver com maior rapidez conhecimentos novos e multiplicá-los para adultos de seu convívio. É com base nessa premissa que a Prefeitura de Hortolândia inicia a realização de palestras sobre escorpião para alunos da rede municipal de ensino. A atividade começou a ser ministrada na EMEIEF (Escola Municipal de Educação Infantil e Ensino Fundamental) João Carlos do Amaral Soares, no Jardim Nova Hortolândia. Os estudantes da escola assistiram a palestra, ministrada por agentes da UVZ (Unidade de Vigilância de Zoonoses), órgão da Secretaria de Saúde, nesta segunda-feira (12/05) e na sexta-feira (09/05). A atividade é feita em parceria com a Secretaria de Educação, Ciência e Tecnologia.</p>
+
+    <p>De acordo com a agente de saneamento da UVZ, Carla Cristina Soares, uma das responsáveis por ministrar a palestra, a atividade tem caráter lúdico. Os agentes ensinam às crianças que tipo de animal é o escorpião, quais seus hábitos, os locais onde vive, dentre outras informações.</p>
+
+    <p>Outro aspecto importante mostrado é que os pequeninos devem evitar de se aproximar para tentar capturar um escorpião, a fim de evitar sofrer acidente com o animal. Sempre que virem um animal desse tipo, eles são orientados a entrar em contato com a UVZ.</p>
+
+    <p>“O ponto alto da palestra é quando ensinamos as crianças a fazerem em casa, junto com seus pais, famílias e responsáveis, as barreiras mecânicas. Elas ajudam a evitar a entrada de escorpiões nas casas delas”, destaca a agente.</p>
+
+    <p>Após a palestra, os professores das turmas que assistiram a palestra irão desenvolver alguma atividade em sala de aula sobre o tema. Além disso, as crianças recebem folhetos explicativos sobre escorpião.</p>
+
+    <p>De acordo com a UVZ, a palestra é um projeto novo que vem sendo realizado desde o fim do ano passado. Inicialmente, cinco escolas municipais da região do Jardim Amanda receberam a palestra, entre agosto e setembro de 2024.</p>
+
+    <p>A partir de agora, a UVZ pretende apresentar a palestra nas demais escolas da rede municipal de ensino. A atividade será realizada sempre que a agenda do órgão possibilitar, e mediante aval da Secretaria de Educação, Ciência e Tecnologia. De acordo com a UVZ, Hortolândia registra este ano 108 acidentes com escorpião, nenhum com vítima fatal.</p>
+
+    <h3>ACIDENTES</h3>
+
+    <p>Em caso de acidentes com escorpiões ou outros animais peçonhentos, a UVZ  informa que o atendimento inicial às vítimas é feito no Hospital Municipal Mario Covas e nas UPAs do município. Os casos são avaliados, e conforme a gravidade, são encaminhados para unidades fora do município.</p>
+
+    <p>A UVZ ainda salienta que crianças de até 10 anos de idade que, porventura, tenham sofrido acidente com escorpião são encaminhadas diretamente para o Hospital Estadual de Sumaré (HES).</p>
+
+    <!-- segunda noticia -->
+    <br><br>
+    <h2> PICADAS DE ESCORPIÃO: CRIANÇAS E IDOSOS PODEM TER MAIS COMPLICAÇÕES </h2>
+    <!-- Vídeo embutido -->
+    <div class="video-container">
+        <iframe
+                src="https://www.youtube.com/embed/wOJzQMwIwT4"
+                title="Vídeo sobre escorpiões"
+                allowfullscreen
+                loading="lazy"
+        ></iframe>
+    </div>
+    <p><strong>Fonte: Rede Record</strong></p>
+
+    <!-- terceira noticia -->
+    <br><br>
+    <h2>Proliferação de escorpiões preocupa Hortolândia</h2>
+
+    <p><strong>Redação G.5 de dezembro de 2024</strong></p>
+
+    <p><strong>Escorpião</strong></p>
+
+    <p>Durante a 39ª Sessão Ordinária da Câmara Municipal de Hortolândia, realizada em 2 de dezembro de 2024, o vereador Clodoaldo Santos da Silva destacou a crescente proliferação de escorpiões na cidade e o perigo iminente para a população. De acordo com o parlamentar, diversas regiões têm registrado aumento significativo de relatos sobre o aparecimento desses animais peçonhentos nas residências.</p>
+
+    <p>Clodoaldo solicitou ações concretas da administração municipal, com ênfase na execução de controle químico nas áreas críticas, além de medidas preventivas. Entre as propostas, o vereador sugeriu a distribuição de materiais informativos com orientações práticas à população, como instalação de redes nos ralos, vedação de frestas em portas e a aplicação periódica de inseticidas. Essas ações visam reduzir os focos de proliferação e conscientizar os moradores sobre a necessidade de encaminhar imediatamente as vítimas ao Hospital Municipal para administração do soro antiescorpiônico.</p>
+
+    <p>O parlamentar também apresentou o Requerimento nº 400/2024, aprovado durante a sessão, solicitando informações detalhadas ao Executivo sobre as estratégias para conter o avanço da presença de escorpiões. A proposta inclui perguntas sobre a previsão de início de ações de controle e a elaboração de campanhas educativas.</p>
+
+    <p>A fala do vereador reflete a preocupação crescente da população com os riscos à saúde pública, especialmente considerando o aumento no número de acidentes envolvendo esses animais.</p>
+
+    <p>O Portal Hortolândia entrou em contato com a Prefeitura de Hortolândia solicitando um posicionamento. Contudo, até o momento da publicação desta matéria, não houve retorno por parte da Prefeitura.</p>
+
+    <br><br>
+    <h3 style="text-align: center;">
+        As informações aqui dispostas foram retiradas do
+        <a href="https://www.hortolandia.sp.gov.br/" target="_blank" rel="noopener noreferrer">
+            portal de Hortolândia
+        </a>
+        ou de outros órgãos públicos e têm finalidade acadêmica.
+    </h3>
+
+</main>
+
+<footer>
+    &copy; 2025 Mapa de Escorpiões. Todos os direitos reservados.
+</footer>
+
+</body>
+</html>

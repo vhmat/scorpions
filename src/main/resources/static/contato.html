@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contato - Escorpiões em Hortolândia</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        body, html {
+          height: 100%;
+          font-family: Arial, sans-serif;
+          display: flex;
+          flex-direction: column;
+        }
+
+        header {
+          background-color: #222;
+          color: white;
+          padding: 15px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        header nav a {
+          color: white;
+          text-decoration: none;
+          margin-left: 20px;
+          font-weight: bold;
+        }
+
+        main {
+          flex: 1;
+          padding: 20px;
+          max-width: 900px;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        footer {
+          background-color: #222;
+          color: white;
+          text-align: center;
+          padding: 15px;
+          font-size: 14px;
+        }
+
+        h1 {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+
+        /* Container das duas colunas */
+        .duas-colunas {
+          display: flex;
+          justify-content: center; /* centraliza as colunas no container */
+          gap: 40px;
+          position: relative; /* para a linha vertical */
+          max-width: 900px;
+          margin: 0 auto;
+          align-items: flex-start; /* garante alinhamento vertical do topo */
+        }
+
+        .coluna {
+          flex: 1;
+          max-width: 420px; /* para limitar um pouco a largura e manter legível */
+          padding: 0 20px;
+          text-align: center; /* centraliza texto dentro da coluna */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        /* Alinha o texto para que o topo fique alinhado
+           e o conteúdo fique com texto justificado (opcional) */
+        .coluna p {
+          margin-bottom: 1em;
+          text-align: center;
+          white-space: pre-line;
+        }
+
+        /* Linha vertical entre as colunas, com altura só da maior coluna */
+        .duas-colunas::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 50%;
+          width: 1px;
+          background-color: #888;
+          transform: translateX(-50%);
+          /* Ajuste da altura para cortar só na altura das colunas */
+          height: auto;
+          max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><strong>Escorpiões em Hortolândia</strong></div>
+    <nav>
+        <a href="/heatmap.html">Início</a>
+        <a href="/informacoes.html">Informações</a>
+        <a href="/noticias.html">Notícias</a>
+        <a href="/contato.html">Contato</a>
+    </nav>
+</header>
+
+<main>
+    <h1>CONTATO</h1>
+
+    <div class="duas-colunas">
+        <div class="coluna">
+            <h2>ZOONOSES</h2>
+                Serviço de vigilância, prevenção e de controle de zoonoses e de acidentes causados por animais peçonhentos e venenosos de relevância para a saúde pública.</p>
+
+            <p>Após o registro da solicitação a equipe da unidade de vigilância de zoonoses realiza a vistoria ao local, definindo as medidas de intervenções necessárias para o controle do problema detectado.</p>
+
+            <p>Vale ressaltar que para o controle de muitas das zoonoses é necessário a colaboração do responsável pelo imóvel, executando as orientações que é dada na primeira visita.</p>
+
+            <p><strong>Contato e Dúvidas</strong><br>
+                E-mail: uvz@hotolandia.sp.gov.br<br>
+                Telefone: (19) 3897-3312 ou<br>
+                (19) 3897-5974</p>
+
+            <p>Horário de atendimento:<br>
+                Segunda a Sexta – 08h às 17h</p>
+
+            <p>Departamento de Proteção e Bem Estar Animal (DPBEA) / Unidade de Vigilância de Zoonoses (UVZ):<br>
+                Rua Atanásio Gigo, 60, Chácara Recreio 2000.</p>
+        </div>
+
+        <div class="coluna">
+            <h2>SECRETARIA DA SAÚDE</h2>
+            <p>A Secretaria Municipal da Saúde é responsável pela execução dos serviços públicos de saúde, integrados no SUS (Sistema Único de Saúde).</p>
+
+            <p>Tais serviços não fazem referência somente ao tratamento de pacientes em postos de saúde (UBSs) e hospitais, mas também às fiscalizações sanitárias em residências e comércios, assim como o controle de endemias no Município.</p>
+
+            <p>É também papel da Secretaria a implementação de políticas públicas de saneamento básico, que objetivem melhores condições de higiene pessoal e social, o que, consequentemente, garante acesso à saúde a todos os munícipes de forma igualitária.</p>
+
+            <p><strong>Contato</strong><br>
+                REGISTRE SUA MANIFESTAÇÃO:</p>
+
+            <p><strong>OUVIDORIA SAÚDE</strong><br>
+                Telefone: (19) 3965-1400</p>
+
+            <p>E-mail: pmhsaude@hortolandia.sp.gov.br<br>
+                ouvidoriasaude@hortolandia.sp.gov.br</p>
+
+            <p>Horário de atendimento:<br>
+                Segunda a Sexta – 08h às 17h</p>
+
+            <p>Palácio dos Migrantes – Paço Municipal “Prefeito Angelo Augusto Perugini”<br>
+                Rua Projetada 12, nº 100, Jardim Metropolitan (2º piso).</p>
+        </div>
+    </div>
+
+    <br><br>
+    <h3 style="text-align: center;">
+        As informações aqui dispostas foram retiradas do
+        <a href="https://www.hortolandia.sp.gov.br/" target="_blank" rel="noopener noreferrer">
+            portal de Hortolândia
+        </a>
+        ou de outros órgãos públicos e têm finalidade acadêmica.
+    </h3>
+
+</main>
+
+<footer>
+    &copy; 2025 Mapa de Escorpiões. Todos os direitos reservados.
+</footer>
+
+</body>
+</html>
