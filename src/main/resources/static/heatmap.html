@@ -103,6 +103,49 @@
             height: 300px;
           }
         }
+
+        /* minimiza o modal temporariamente */
+        #modalForm.minimized {
+          transition: opacity 0.3s ease;
+          opacity: 0.3;
+          pointer-events: none;
+        }
+
+        /* mensagem para selecionar local */
+        #selectLocationMsg {
+          position: fixed;
+          top: 70px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: #fffae6;
+          border: 1px solid #f0c36d;
+          color: #7a5900;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-weight: bold;
+          box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+          z-index: 10000;
+          display: none;
+          user-select: none;
+        }
+
+        /* botão selecionar local */
+        #btnSelectLocation {
+          display: block;
+          margin: 0 auto 15px auto;
+          padding: 8px 15px;
+          font-size: 1rem;
+          background-color: #4CAF50;
+          border: none;
+          border-radius: 5px;
+          color: white;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        #btnSelectLocation:hover {
+          background-color: #45a049;
+        }
     </style>
 </head>
 <body>
@@ -115,7 +158,6 @@
         <a href="#">Contato</a>
     </nav>
 </header>
-
 
 <!--parte central da tela contendo o mapa e o botao para registrar ocorrencia-->
 <main>
@@ -141,6 +183,9 @@
 
 </main>
 
+<!-- mensagem para instrucao ao selecionar ponto no mapa -->
+<div id="selectLocationMsg">Por favor, selecione o local da ocorrência clicando no mapa.</div>
+
 <!-- modal do formulario -->
 <div id="modalForm" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
      background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 9999;">
@@ -150,6 +195,9 @@
         <button id="closeFormBtn" style="position: absolute; top: 10px; right: 15px; font-size: 1.5rem; background: none; border: none; cursor: pointer;">×</button>
 
         <h2 style="text-align: center; margin-bottom: 20px;">Registrar Ocorrência</h2>
+
+        <!-- botao para selecionar local da ocorrencia -->
+        <button id="btnSelectLocation" type="button">Selecionar local da ocorrência</button>
 
         <form id="ocorrenciaForm">
             <label>Nome:<br/><input type="text" id="nome" name="nome" required style="width: 100%; margin-bottom:10px;" /></label>
@@ -179,19 +227,26 @@
     const openBtn = document.getElementById('openFormBtn');
     const closeBtn = document.getElementById('closeFormBtn');
     const form = document.getElementById('ocorrenciaForm');
+    const btnSelectLocation = document.getElementById('btnSelectLocation');
+    const selectLocationMsg = document.getElementById('selectLocationMsg');
+
+    // flag para modo selecao de local no mapa
+    let modoSelecionarLocal = false;
 
     openBtn.addEventListener('click', () => {
       modal.style.display = 'flex';
+      modal.classList.remove('minimized');
     });
 
     closeBtn.addEventListener('click', () => {
       modal.style.display = 'none';
+      cancelarSelecaoLocal();
     });
 
-    // Fecha o modal clicando fora do conteúdo
     modal.addEventListener('click', (e) => {
       if (e.target === modal) {
         modal.style.display = 'none';
+        cancelarSelecaoLocal();
       }
     });
 
@@ -230,6 +285,32 @@
         alert('Erro ao registrar ocorrência.');
       });
     });
+
+    // minimiza modal ao focar em latitude ou longitude
+    document.getElementById('latitude').addEventListener('focus', () => {
+      modal.classList.add('minimized');
+    });
+    document.getElementById('longitude').addEventListener('focus', () => {
+      modal.classList.add('minimized');
+    });
+
+    // funcao para ativar modo selecao de local no mapa
+    btnSelectLocation.addEventListener('click', () => {
+      // Fecha o modal
+      modal.style.display = 'none';
+
+      // mostra mensagem instruindo usuario
+      selectLocationMsg.style.display = 'block';
+
+      // ativa flag para aguardar clique no mapa
+      modoSelecionarLocal = true;
+    });
+
+    // funcao para cancelar modo selecao
+    function cancelarSelecaoLocal() {
+      modoSelecionarLocal = false;
+      selectLocationMsg.style.display = 'none';
+    }
 </script>
 
 <!--logica que carrega o mapa filtrando as ocorrencias registradas no banco de dados-->
@@ -271,6 +352,29 @@
     }
 
     carregarMapa();
+
+    // logica de clique no mapa para preencher latitude e longitude
+    map.on('click', function(e) {
+      const { lat, lng } = e.latlng;
+
+      if (modoSelecionarLocal) {
+        // preenche os campos do formulario
+        document.getElementById('latitude').value = lat.toFixed(6);
+        document.getElementById('longitude').value = lng.toFixed(6);
+
+        // reabre o modal
+        modal.style.display = 'flex';
+        modal.classList.remove('minimized');
+
+        // esconde mensagem e desativa modo selecao
+        cancelarSelecaoLocal();
+      } else {
+        // Comportamento antigo: preenche direto no formulário se modal aberto
+        document.getElementById('latitude').value = lat.toFixed(6);
+        document.getElementById('longitude').value = lng.toFixed(6);
+        modal.classList.remove('minimized'); // restaura o modal após o clique
+      }
+    });
 </script>
 
 </body>
