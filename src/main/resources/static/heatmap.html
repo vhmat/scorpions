@@ -165,7 +165,39 @@
     <h1 style="font-size: 2.5rem; text-align: center; margin-top: 20px;">OCORRÊNCIAS DE ESCORPIÕES EM HORTOLÂNDIA</h1>
 
     <div id="map" style="height: 500px; width: 100%; margin: 20px 0;"></div>
-    
+
+    <div id="map-legend" style="
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  flex-wrap: wrap;
+  margin: 10px auto;
+  padding: 10px 15px;
+  max-width: 900px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-size: 0.9rem;
+">
+        <div style="display: flex; align-items: center;">
+            <div style="width: 20px; height: 10px; background: blue; margin-right: 6px;"></div>
+            Baixa concentração
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div style="width: 20px; height: 10px; background: limegreen; margin-right: 6px;"></div>
+            Moderada
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div style="width: 20px; height: 10px; background: yellow; margin-right: 6px;"></div>
+            Alta
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div style="width: 20px; height: 10px; background: red; margin-right: 6px;"></div>
+            Altíssima
+        </div>
+    </div>
 
     <div id="filters" style="text-align: center; margin-bottom: 30px;">
 <!--        <label for="bairro">Bairro:</label>
@@ -328,30 +360,27 @@
     let heatLayer;
 
     function carregarMapa() {
-      <!--const bairro = document.getElementById('bairro').value;-->
-      const ano = document.getElementById('ano').value;
+  const ano = document.getElementById('ano').value;
+  let url = '/api/ocorrencias/filtrar?';
+  if (ano) url += `ano=${encodeURIComponent(ano)}&`;
 
-      let url = '/api/ocorrencias/filtrar?';
-      <!--if (bairro) url += `bairro=${encodeURIComponent(bairro)}&`;-->
-      if (ano) url += `ano=${encodeURIComponent(ano)}&`;
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      const heatPoints = data.map(p => [p.latitude, p.longitude, 0.7]);
 
-      fetch(url)
-        .then(response => response.json())
-        .then(data => {
-          const heatPoints = data.map(p => [p.latitude, p.longitude, 0.7]);
+      if (heatLayer) {
+        map.removeLayer(heatLayer);
+      }
 
-          if (heatLayer) {
-            map.removeLayer(heatLayer);
-          }
-
-          heatLayer = L.heatLayer(heatPoints, {
-            radius: 25,
-            blur: 15,
-            maxZoom: 17
-          }).addTo(map);
-        })
-        .catch(err => console.error('Erro ao carregar coordenadas filtradas:', err));
-    }
+      heatLayer = L.heatLayer(heatPoints, {
+        radius: 25,
+        blur: 15,
+        maxZoom: 17
+      }).addTo(map);
+    })
+    .catch(err => console.error('Erro ao carregar coordenadas filtradas:', err));
+}
 
     carregarMapa();
 
